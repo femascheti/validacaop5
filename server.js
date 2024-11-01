@@ -35,7 +35,7 @@ app.post('/project-info', async (req, res) => {
                 '--shm-size=1gb'
             ],
             headless: true,
-            executablePath: process.env.CHROME_BIN || nul,
+            executablePath: process.env.CHROME_BIN || null,
         });
         const page = await browser.newPage();
         await page.goto(sketchesUrl, { waitUntil: 'networkidle2' });
