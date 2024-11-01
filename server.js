@@ -6,7 +6,6 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 
-// Servindo o arquivo index.html como página inicial
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
@@ -26,7 +25,8 @@ app.post('/project-info', async (req, res) => {
 
     try {
         const browser = await puppeteer.launch({
-            args: ['--no-sandbox', '--disable-setuid-sandbox']
+            args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu', '--disable-dev-shm-usage'], 
+            headless: true
         });
         const page = await browser.newPage();
         await page.goto(sketchesUrl, { waitUntil: 'networkidle2' });
