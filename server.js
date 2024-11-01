@@ -34,7 +34,8 @@ app.post('/project-info', async (req, res) => {
                 '--disable-features=IsolateOrigins,site-per-process',
                 '--shm-size=1gb'
             ],
-            headless: true
+            headless: true,
+            executablePath: process.env.CHROME_BIN || nul,
         });
         const page = await browser.newPage();
         await page.goto(sketchesUrl, { waitUntil: 'networkidle2' });

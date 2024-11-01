@@ -5,7 +5,6 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "postinstall": "npx puppeteer install",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -13,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.21.1",
-    "puppeteer": "^23.6.1"
+    "puppeteer-core": "^23.6.1",
+    "chrome-aws-lambda": "^10.0.0"
   }
 }
