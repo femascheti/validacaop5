@@ -25,13 +25,22 @@ app.post('/project-info', async (req, res) => {
 
     try {
         const browser = await puppeteer.launch({
-            args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu', '--disable-dev-shm-usage'], 
+            args: [
+                '--no-sandbox',
+                '--disable-setuid-sandbox',
+                '--disable-gpu',
+                '--disable-dev-shm-usage',
+                '--disable-web-security',
+                '--disable-features=IsolateOrigins,site-per-process',
+                '--shm-size=1gb'
+            ],
             headless: true
         });
         const page = await browser.newPage();
         await page.goto(sketchesUrl, { waitUntil: 'networkidle2' });
 
-        // Captura as informações da tabela de projetos
+        const pageContent = await page.content();
+
         const projectInfo = await page.evaluate((projectCode) => {
             const rows = document.querySelectorAll('.sketches-table tbody tr');
             for (const row of rows) {
@@ -50,13 +59,13 @@ app.post('/project-info', async (req, res) => {
         await browser.close();
 
         if (!projectInfo) {
-            console.log("Projeto não encontrado na página.");  // Log para debug
+            console.log("Página retornada pelo P5.js:", pageContent);
             return res.status(404).json({ error: 'Projeto não encontrado.' });
         }
 
         res.json(projectInfo);
     } catch (error) {
-        console.error("Erro ao acessar o site do P5.js:", error);  // Log detalhado do erro
+        console.error("Erro ao acessar o site do P5.js:", error); 
         res.status(500).json({ error: 'Erro ao acessar o site do P5.js.' });
     }
 });
