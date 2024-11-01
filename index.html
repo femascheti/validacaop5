@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projetos P5</title>
+</head>
+<body>
+    <h1>Projetos P5</h1>
+    <form id="project-form">
+        <label for="project-link">Insira o link do projeto P5.js:</label>
+        <input type="url" id="project-link" placeholder="https://editor.p5js.org/username/sketches/projectCode" required>
+        <button type="button" onclick="fetchProjectInfo()">Consultar</button>
+    </form>
+    <div id="project-info"></div>
+
+    <script>
+        async function fetchProjectInfo() {
+            const projectLink = document.getElementById('project-link').value;
+            try {
+                const response = await fetch('/project-info', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ projectLink })
+                });
+                const data = await response.json();
+                document.getElementById('project-info').innerHTML = `<p>Projeto: ${data.name}</p><p>Data Atualização: ${data.dateUpdated}</p>`;
+            } catch (error) {
+                document.getElementById('project-info').innerHTML = `<p>Erro: ${error.message}</p>`;
+            }
+        }
+    </script>
+</body>
+</html>
